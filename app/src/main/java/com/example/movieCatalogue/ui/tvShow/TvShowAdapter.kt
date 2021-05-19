@@ -44,7 +44,7 @@ class TvShowAdapter(private val callback: TvShowCallback) :
                 tvItemSynopsis.text = tvShow.synopsis
                 imgPoster.setOnClickListener {
                     val intent = Intent(itemView.context, DetailMovieActivity::class.java)
-                    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, tvShow.tvShowId)
+                    intent.putExtra(DetailMovieActivity.EXTRA_TV_SHOW, tvShow.tvShowId)
                     itemView.context.startActivity(intent)
                 }
                 imgShare.setOnClickListener { callback.onShareClick(tvShow) }

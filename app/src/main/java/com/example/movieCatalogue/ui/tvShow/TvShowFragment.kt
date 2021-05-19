@@ -1,16 +1,16 @@
 package com.example.movieCatalogue.ui.tvShow
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ShareCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movieCatalogue.R
 import com.example.movieCatalogue.data.TvShowEntity
 import com.example.movieCatalogue.databinding.FragmentTvShowBinding
-import com.example.movieCatalogue.utils.DataMovie
 
 class TvShowFragment : Fragment(), TvShowCallback {
 
@@ -29,7 +29,11 @@ class TvShowFragment : Fragment(), TvShowCallback {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val tvShows = DataMovie.generateDataTvShow()
+            val viewModel = ViewModelProvider(
+                this,
+                ViewModelProvider.NewInstanceFactory()
+            )[TvShowViewModel::class.java]
+            val tvShows = viewModel.getTvShows()
             val adapter = TvShowAdapter(this)
             adapter.setTvShows(tvShows)
 

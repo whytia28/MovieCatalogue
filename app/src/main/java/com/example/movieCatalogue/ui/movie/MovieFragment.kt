@@ -1,21 +1,21 @@
 package com.example.movieCatalogue.ui.movie
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ShareCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movieCatalogue.R
 import com.example.movieCatalogue.data.MovieEntity
 import com.example.movieCatalogue.databinding.FragmentMovieBinding
-import com.example.movieCatalogue.utils.DataMovie
 
 
 class MovieFragment : Fragment(), MovieCallback {
 
-    lateinit var fragmentMovieBinding: FragmentMovieBinding
+    private lateinit var fragmentMovieBinding: FragmentMovieBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +28,11 @@ class MovieFragment : Fragment(), MovieCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val movies = DataMovie.generateDataMovie()
+            val viewModel = ViewModelProvider(
+                this,
+                ViewModelProvider.NewInstanceFactory()
+            )[MovieViewModel::class.java]
+            val movies = viewModel.getMovies()
             val movieAdapter = MovieAdapter(this)
             movieAdapter.setMovies(movies)
 

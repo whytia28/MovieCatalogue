@@ -12,4 +12,6 @@
     <string name="category">Category</string>
     <string name="share_title">Share This Application Now</string>
     <string name="share_text">Watch %s movies on Netflix.com</string>
+    <string name="by">by</string>
+    <string name="name">Wahyu Widodo</string>
 </resources>
