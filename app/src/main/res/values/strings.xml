@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">MovieCatalogue</string>
+    <string name="app_name">Movie Catalogue</string>
+    <string name="title_activity_detail_movie">Detail Movie</string>
+
+    <string name="title">Title</string>
+    <string name="dateline">Dateline</string>
+    <string name="home">Home</string>
+    <string name="movie">Movies</string>
+    <string name="tv_show">TV Shows</string>
+    <string name="release_date">Release</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="category">Category</string>
+    <string name="share_title">Share This Application Now</string>
+    <string name="share_text">Watch %s movies on Netflix.com</string>
 </resources>
