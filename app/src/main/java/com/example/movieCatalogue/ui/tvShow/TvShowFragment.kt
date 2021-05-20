@@ -20,7 +20,7 @@ class TvShowFragment : Fragment(), TvShowCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
+
         fragmentTvShowBinding = FragmentTvShowBinding.inflate(inflater, container, false)
         return fragmentTvShowBinding.root
     }

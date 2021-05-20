@@ -39,7 +39,7 @@ class MovieAdapter(private val callback: MovieCallback) :
                 tvItemTitle.text = movie.title
                 tvItemRelease.text = movie.releaseDate
                 tvItemSynopsis.text = movie.synopsis
-                imgPoster.setOnClickListener {
+                itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailMovieActivity::class.java)
                     intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie.movieId)
                     itemView.context.startActivity(intent)

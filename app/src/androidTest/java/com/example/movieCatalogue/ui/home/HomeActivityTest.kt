@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.example.movieCatalogue.R
 import com.example.movieCatalogue.utils.DataMovie
+import org.hamcrest.CoreMatchers.allOf
 import org.junit.Rule
 import org.junit.Test
 
@@ -42,8 +43,12 @@ class HomeActivityTest {
 
     @Test
     fun loadDetailMovie() {
-        onView(withId(R.id.img_poster_tv_show)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2,
-            click()))
+        onView(allOf(withId(R.id.rv_movie))).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                2,
+                click()
+            )
+        )
         onView(withId(R.id.text_title)).check(matches(isDisplayed()))
         onView(withId(R.id.text_title)).check(matches(withText(dummyMovie[2].title)))
         onView(withId(R.id.text_category)).check(matches(isDisplayed()))
