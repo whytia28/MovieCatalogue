@@ -53,5 +53,30 @@ class HomeActivityTest {
         onView(withId(R.id.text_title)).check(matches(withText(dummyMovie[2].title)))
         onView(withId(R.id.text_category)).check(matches(isDisplayed()))
         onView(withId(R.id.text_category)).check(matches(withText(dummyMovie[2].category)))
+        onView(withId(R.id.text_synopsis)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_synopsis)).check(matches(withText(dummyMovie[2].synopsis)))
+        onView(withId(R.id.text_release)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_release)).check(matches(withText(dummyMovie[2].releaseDate)))
+        onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun loadTvShowDetail() {
+        onView(withText("TV SHOWS")).perform(click())
+        onView(withId(R.id.rv_tv_show)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                2,
+                click()
+            )
+        )
+        onView(withId(R.id.text_title)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_title)).check(matches(withText(dummyTvShow[2].title)))
+        onView(withId(R.id.text_category)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_category)).check(matches(withText(dummyTvShow[2].category)))
+        onView(withId(R.id.text_synopsis)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_synopsis)).check(matches(withText(dummyTvShow[2].synopsis)))
+        onView(withId(R.id.text_release)).check(matches(isDisplayed()))
+        onView(withId(R.id.text_release)).check(matches(withText(dummyTvShow[2].releaseDate)))
+        onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
     }
 }
