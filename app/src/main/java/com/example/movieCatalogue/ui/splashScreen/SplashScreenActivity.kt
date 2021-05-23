@@ -9,6 +9,10 @@ import com.example.movieCatalogue.databinding.ActivitySplashScreenBinding
 import com.example.movieCatalogue.ui.home.HomeActivity
 
 class SplashScreenActivity : AppCompatActivity() {
+    companion object {
+        const val DELAY = 2000
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -20,6 +24,6 @@ class SplashScreenActivity : AppCompatActivity() {
                 Intent(this@SplashScreenActivity, HomeActivity::class.java)
             )
             finish()
-        }, 2000)
+        }, DELAY.toLong())
     }
 }

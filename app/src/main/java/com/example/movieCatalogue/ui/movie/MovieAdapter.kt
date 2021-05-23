@@ -1,16 +1,16 @@
 package com.example.movieCatalogue.ui.movie
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieCatalogue.data.MovieEntity
 import com.example.movieCatalogue.databinding.ItemsMovieBinding
-import com.example.movieCatalogue.ui.detail.DetailMovieActivity
 
 class MovieAdapter(private val callback: MovieCallback) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+
+    private var onItemClickCallback: OnItemClickCallback? = null
     private var listMovies = ArrayList<MovieEntity>()
 
     fun setMovies(movies: List<MovieEntity>?) {
@@ -40,9 +40,7 @@ class MovieAdapter(private val callback: MovieCallback) :
                 tvItemRelease.text = movie.releaseDate
                 tvItemSynopsis.text = movie.synopsis
                 itemView.setOnClickListener {
-                    val intent = Intent(itemView.context, DetailMovieActivity::class.java)
-                    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie.movieId)
-                    itemView.context.startActivity(intent)
+                    onItemClickCallback?.onItemClicked(movie)
                 }
                 imgShare.setOnClickListener { callback.onShareClick(movie) }
                 Glide.with(itemView.context)
@@ -51,5 +49,13 @@ class MovieAdapter(private val callback: MovieCallback) :
             }
         }
 
+    }
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: MovieEntity)
+    }
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
     }
 }

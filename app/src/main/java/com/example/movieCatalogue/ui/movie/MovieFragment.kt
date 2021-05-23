@@ -1,5 +1,6 @@
 package com.example.movieCatalogue.ui.movie
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movieCatalogue.R
 import com.example.movieCatalogue.data.MovieEntity
 import com.example.movieCatalogue.databinding.FragmentMovieBinding
+import com.example.movieCatalogue.ui.detail.DetailMovieActivity
 
 
 class MovieFragment : Fragment(), MovieCallback {
@@ -41,6 +43,16 @@ class MovieFragment : Fragment(), MovieCallback {
                 setHasFixedSize(true)
                 this.adapter = movieAdapter
             }
+            movieAdapter.setOnItemClickCallback(object : MovieAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: MovieEntity) {
+                    activity?.let {
+                        val intent = Intent(it, DetailMovieActivity::class.java)
+                        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, data.movieId)
+                        it.startActivity(intent)
+                    }
+                }
+
+            })
         }
     }
 

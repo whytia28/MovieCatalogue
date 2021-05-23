@@ -1,5 +1,6 @@
 package com.example.movieCatalogue.ui.tvShow
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movieCatalogue.R
 import com.example.movieCatalogue.data.TvShowEntity
 import com.example.movieCatalogue.databinding.FragmentTvShowBinding
+import com.example.movieCatalogue.ui.detail.DetailMovieActivity
 
 class TvShowFragment : Fragment(), TvShowCallback {
 
@@ -42,6 +44,16 @@ class TvShowFragment : Fragment(), TvShowCallback {
                 setHasFixedSize(true)
                 this.adapter = adapter
             }
+            adapter.setOnItemClicked(object : TvShowAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: TvShowEntity) {
+                    activity?.let {
+                        val intent = Intent(it, DetailMovieActivity::class.java)
+                        intent.putExtra(DetailMovieActivity.EXTRA_TV_SHOW, data.tvShowId)
+                        it.startActivity(intent)
+                    }
+                }
+
+            })
 
         }
     }
