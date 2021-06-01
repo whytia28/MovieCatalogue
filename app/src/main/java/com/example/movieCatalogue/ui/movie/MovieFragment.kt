@@ -7,16 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movieCatalogue.R
 import com.example.movieCatalogue.data.MovieEntity
 import com.example.movieCatalogue.databinding.FragmentMovieBinding
 import com.example.movieCatalogue.ui.detail.DetailMovieActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MovieFragment : Fragment(), MovieCallback {
 
+    private val viewModel: MovieViewModel by viewModel()
     private lateinit var fragmentMovieBinding: FragmentMovieBinding
 
     override fun onCreateView(
@@ -30,13 +31,11 @@ class MovieFragment : Fragment(), MovieCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val viewModel = ViewModelProvider(
-                this,
-                ViewModelProvider.NewInstanceFactory()
-            )[MovieViewModel::class.java]
-            val movies = viewModel.getMovies()
             val movieAdapter = MovieAdapter(this)
-            movieAdapter.setMovies(movies)
+            viewModel.getMovies().observe(viewLifecycleOwner, { movies ->
+                movieAdapter.setMovies(movies)
+                movieAdapter.notifyDataSetChanged()
+            })
 
             with(fragmentMovieBinding.rvMovie) {
                 layoutManager = LinearLayoutManager(context)
@@ -52,6 +51,10 @@ class MovieFragment : Fragment(), MovieCallback {
                     }
                 }
 
+            })
+
+            viewModel.getLoading().observe(viewLifecycleOwner, {
+                fragmentMovieBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
             })
         }
     }

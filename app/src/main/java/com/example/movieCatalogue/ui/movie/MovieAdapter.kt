@@ -44,7 +44,7 @@ class MovieAdapter(private val callback: MovieCallback) :
                 }
                 imgShare.setOnClickListener { callback.onShareClick(movie) }
                 Glide.with(itemView.context)
-                    .load(movie.imagePoster)
+                    .load("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${movie.imagePoster}")
                     .into(imgPoster)
             }
         }

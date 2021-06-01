@@ -48,7 +48,7 @@ class TvShowAdapter(private val callback: TvShowCallback) :
                 }
                 imgShare.setOnClickListener { callback.onShareClick(tvShow) }
                 Glide.with(itemView.context)
-                    .load(tvShow.imagePoster)
+                    .load("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${tvShow.imagePoster}")
                     .into(imgPosterTvShow)
             }
         }

@@ -7,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movieCatalogue.R
 import com.example.movieCatalogue.data.TvShowEntity
 import com.example.movieCatalogue.databinding.FragmentTvShowBinding
 import com.example.movieCatalogue.ui.detail.DetailMovieActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TvShowFragment : Fragment(), TvShowCallback {
 
+    private val viewModel: TvShowViewModel by viewModel()
     private lateinit var fragmentTvShowBinding: FragmentTvShowBinding
 
     override fun onCreateView(
@@ -31,13 +32,11 @@ class TvShowFragment : Fragment(), TvShowCallback {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val viewModel = ViewModelProvider(
-                this,
-                ViewModelProvider.NewInstanceFactory()
-            )[TvShowViewModel::class.java]
-            val tvShows = viewModel.getTvShows()
             val adapter = TvShowAdapter(this)
-            adapter.setTvShows(tvShows)
+            viewModel.getTvShows().observe(viewLifecycleOwner, { tvShows ->
+                adapter.setTvShows(tvShows)
+                adapter.notifyDataSetChanged()
+            })
 
             with(fragmentTvShowBinding.rvTvShow) {
                 layoutManager = LinearLayoutManager(context)
@@ -56,6 +55,10 @@ class TvShowFragment : Fragment(), TvShowCallback {
             })
 
         }
+
+        viewModel.getLoading().observe(viewLifecycleOwner, {
+            fragmentTvShowBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+        })
     }
 
     override fun onShareClick(tvShow: TvShowEntity) {

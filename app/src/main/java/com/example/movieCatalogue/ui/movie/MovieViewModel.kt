@@ -1,9 +1,12 @@
 package com.example.movieCatalogue.ui.movie
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.movieCatalogue.data.MovieEntity
-import com.example.movieCatalogue.utils.DataMovie
+import com.example.movieCatalogue.data.source.MovieRepository
 
-class MovieViewModel : ViewModel() {
-    fun getMovies(): List<MovieEntity> = DataMovie.generateDataMovie()
+class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+    fun getMovies(): LiveData<List<MovieEntity>> = movieRepository.getAllMovie()
+    fun getLoading(): LiveData<Boolean> = movieRepository.isLoading
+
 }

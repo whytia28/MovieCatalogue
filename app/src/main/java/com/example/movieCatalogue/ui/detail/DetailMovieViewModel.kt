@@ -1,41 +1,28 @@
 package com.example.movieCatalogue.ui.detail
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.movieCatalogue.data.MovieEntity
 import com.example.movieCatalogue.data.TvShowEntity
-import com.example.movieCatalogue.utils.DataMovie
+import com.example.movieCatalogue.data.source.MovieRepository
 
-class DetailMovieViewModel : ViewModel() {
-    private lateinit var movieId: String
-    private lateinit var tvShowId: String
+class DetailMovieViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+    private var movieId: Int = 0
+    private var tvShowId: Int = 0
 
-    fun setSelectedMovie(movieId: String) {
+    fun setSelectedMovie(movieId: Int) {
         this.movieId = movieId
     }
 
-    fun setSelectedTvShow(tvShowId: String) {
+    fun setSelectedTvShow(tvShowId: Int) {
         this.tvShowId = tvShowId
     }
 
-    fun getMovie(): MovieEntity {
-        lateinit var movie: MovieEntity
-        val movieEntities = DataMovie.generateDataMovie()
-        for (movieEntity in movieEntities) {
-            if (movieEntity.movieId == movieId) {
-                movie = movieEntity
-            }
-        }
-        return movie
-    }
+    fun getMovie(): LiveData<MovieEntity> = movieRepository.getMovieDetail(movieId)
 
-    fun getTvShow(): TvShowEntity {
-        lateinit var tvShow: TvShowEntity
-        val tvShowEntities = DataMovie.generateDataTvShow()
-        for (tvShowEntity in tvShowEntities) {
-            if (tvShowEntity.tvShowId == tvShowId) {
-                tvShow = tvShowEntity
-            }
-        }
-        return tvShow
-    }
+    fun getTvShow(): LiveData<TvShowEntity> = movieRepository.getTvShowDetail(tvShowId)
+
+    fun getLoading(): LiveData<Boolean> = movieRepository.isLoading
+
+
 }

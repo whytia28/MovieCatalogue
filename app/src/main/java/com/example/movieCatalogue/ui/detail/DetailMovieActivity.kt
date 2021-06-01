@@ -1,13 +1,14 @@
 package com.example.movieCatalogue.ui.detail
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.movieCatalogue.data.MovieEntity
 import com.example.movieCatalogue.data.TvShowEntity
 import com.example.movieCatalogue.databinding.ActivityDetailMovieBinding
 import com.example.movieCatalogue.databinding.ContentDetailMovieBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailMovieActivity : AppCompatActivity() {
 
@@ -15,6 +16,8 @@ class DetailMovieActivity : AppCompatActivity() {
         const val EXTRA_MOVIE = "extra_movie"
         const val EXTRA_TV_SHOW = "extra_tv_show"
     }
+
+    private val viewModel: DetailMovieViewModel by viewModel()
 
     private lateinit var detailContentBinding: ContentDetailMovieBinding
 
@@ -29,24 +32,22 @@ class DetailMovieActivity : AppCompatActivity() {
         setSupportActionBar(activityDetailMovieBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val viewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
-        )[DetailMovieViewModel::class.java]
 
         val extras = intent.extras
         if (extras != null) {
-            val movieId = extras.getString(EXTRA_MOVIE)
-            val tvShowId = extras.getString(EXTRA_TV_SHOW)
-            if (movieId != null) {
-                viewModel.setSelectedMovie(movieId)
-                populateMovie(viewModel.getMovie())
-            }
-            if (tvShowId != null) {
-                viewModel.setSelectedTvShow(tvShowId)
-                populateMovie(viewModel.getTvShow())
-            }
+            val movieId = extras.getInt(EXTRA_MOVIE)
+            val tvShowId = extras.getInt(EXTRA_TV_SHOW)
+
+            viewModel.setSelectedMovie(movieId)
+            viewModel.getMovie().observe(this, { movie -> populateMovie(movie) })
+
+            viewModel.setSelectedTvShow(tvShowId)
+            viewModel.getTvShow().observe(this, { tvShow -> populateMovie(tvShow) })
+
         }
+        viewModel.getLoading().observe(this, {
+            detailContentBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+        })
     }
 
     private fun populateMovie(movieEntity: MovieEntity) {
@@ -56,7 +57,7 @@ class DetailMovieActivity : AppCompatActivity() {
         detailContentBinding.textSynopsis.text = movieEntity.synopsis
 
         Glide.with(this)
-            .load(movieEntity.imagePoster)
+            .load("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${movieEntity.imagePoster}")
             .into(detailContentBinding.imagePoster)
     }
 
@@ -67,7 +68,7 @@ class DetailMovieActivity : AppCompatActivity() {
         detailContentBinding.textSynopsis.text = tvShowEntity.synopsis
 
         Glide.with(this)
-            .load(tvShowEntity.imagePoster)
+            .load("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${tvShowEntity.imagePoster}")
             .into(detailContentBinding.imagePoster)
     }
 
