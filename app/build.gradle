@@ -19,12 +19,8 @@ android {
     }
 
     buildTypes {
-        def API_KEY = "API_KEY"
-        def BASE_URL = "BASE_URL"
         release {
             minifyEnabled false
-            buildConfigField "String", "API_KEY", "68ff07774df041eef8a191fa74aa7bb2"
-            buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

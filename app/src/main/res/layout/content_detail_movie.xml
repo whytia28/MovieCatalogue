@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:descendantFocusability="blocksDescendants"
-    android:padding="16dp"
-    android:id="@+id/content">
+    android:padding="16dp">
 
     <ImageView
         android:id="@+id/image_poster"
@@ -99,7 +98,7 @@
         app:layout_constraintTop_toTopOf="@id/synopsis" />
 
     <ProgressBar
-        android:id="@+id/progress_bar"
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

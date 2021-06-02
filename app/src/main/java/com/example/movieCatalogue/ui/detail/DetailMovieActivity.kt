@@ -53,7 +53,7 @@ class DetailMovieActivity : AppCompatActivity() {
     private fun populateMovie(movieEntity: MovieEntity) {
         detailContentBinding.textTitle.text = movieEntity.title
         detailContentBinding.textRelease.text = movieEntity.releaseDate
-        detailContentBinding.textCategory.text = movieEntity.category
+        detailContentBinding.textCategory.text = movieEntity.category.toString()
         detailContentBinding.textSynopsis.text = movieEntity.synopsis
 
         Glide.with(this)
@@ -64,7 +64,7 @@ class DetailMovieActivity : AppCompatActivity() {
     private fun populateMovie(tvShowEntity: TvShowEntity) {
         detailContentBinding.textTitle.text = tvShowEntity.title
         detailContentBinding.textRelease.text = tvShowEntity.releaseDate
-        detailContentBinding.textCategory.text = tvShowEntity.category
+        detailContentBinding.textCategory.text = tvShowEntity.category.toString()
         detailContentBinding.textSynopsis.text = tvShowEntity.synopsis
 
         Glide.with(this)

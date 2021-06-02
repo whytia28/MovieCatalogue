@@ -25,6 +25,8 @@ data class ResultTvShow(
     val originalLanguage: String,
     @SerializedName("original_name")
     val originalName: String,
+    @SerializedName("genre_ids")
+    val genreIds: List<String>,
     @SerializedName("overview")
     val overview: String,
 )

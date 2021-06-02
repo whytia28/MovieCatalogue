@@ -18,13 +18,6 @@ class MovieRepository(private val apiService: ApiService) : MovieDataSource {
         private const val API_KEY = "68ff07774df041eef8a191fa74aa7bb2"
     }
 
-    private val _listMovieEntity = MutableLiveData<List<ResultMovie>>()
-    val listMovieEntity: LiveData<List<ResultMovie>> = _listMovieEntity
-
-    private val _listTvShowEntity = MutableLiveData<List<ResultTvShow>>()
-    val listTvShowEntity: LiveData<List<ResultTvShow>> = _listTvShowEntity
-
-
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -47,7 +40,7 @@ class MovieRepository(private val apiService: ApiService) : MovieDataSource {
                                 result.title,
                                 result.overview,
                                 result.releaseDate,
-                                result.originalLanguage,
+                                result.genreIds,
                                 result.posterPath
                             )
                             movieList.add(movie)
@@ -87,7 +80,7 @@ class MovieRepository(private val apiService: ApiService) : MovieDataSource {
                                 result.originalName,
                                 result.overview,
                                 result.firstAirDate,
-                                result.originalLanguage,
+                                result.genreIds,
                                 result.posterPath
                             )
                             tvShowList.add(tvShow)
@@ -121,7 +114,7 @@ class MovieRepository(private val apiService: ApiService) : MovieDataSource {
                                 movieResponse.title,
                                 movieResponse.overview,
                                 movieResponse.releaseDate,
-                                movieResponse.genres.toString(),
+                                movieResponse.genres.map { it.name },
                                 movieResponse.posterPath
 
                             )
@@ -160,7 +153,7 @@ class MovieRepository(private val apiService: ApiService) : MovieDataSource {
                             tvShowResponse.name,
                             tvShowResponse.overview,
                             tvShowResponse.firstAirDate,
-                            tvShowResponse.genres.toString(),
+                            tvShowResponse.genres.map { it.name },
                             tvShowResponse.posterPath
                         )
                         tvShowDetail.postValue(tvShow)

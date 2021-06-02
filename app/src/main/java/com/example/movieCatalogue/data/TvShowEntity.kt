@@ -5,6 +5,6 @@ data class TvShowEntity(
     var title: String?,
     var synopsis: String?,
     var releaseDate: String?,
-    var category: String?,
+    var category: List<String>,
     var imagePoster: String?
 )

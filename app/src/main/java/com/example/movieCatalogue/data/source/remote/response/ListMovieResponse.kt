@@ -23,6 +23,8 @@ data class ResultMovie(
     val posterPath: String,
     @SerializedName("release_date")
     val releaseDate: String,
+    @SerializedName("genre_ids")
+    val genreIds: List<String>,
     @SerializedName("title")
     val title: String
 )
