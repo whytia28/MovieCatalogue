@@ -30,11 +30,11 @@ object DataMovie {
         movies.add(
             MovieEntity(
                 3,
-                "Aquaman",
-                "Once home to the most advanced civilization on Earth, Atlantis is now an underwater kingdom ruled by the power-hungry King Orm. With a vast army at his disposal, Orm plans to conquer the remaining oceanic people and then the surface world. Standing in his way is Arthur Curry, Orm's half-human, half-Atlantean brother and true heir to the throne.",
-                "7 December 2018",
-                listOf("Action", "Adventure", "Fantasy"),
-                "xLPffWMhMj1l50ND3KchMjYoKmE.jpg"
+                "The Unholy",
+                "Alice, a young hearing-impaired girl who, after a supposed visitation from the Virgin Mary, is inexplicably able to hear, speak and heal the sick. As word spreads and people from near and far flock to witness her miracles, a disgraced journalist hoping to revive his career visits the small New England town to investigate. When terrifying events begin to happen all around, he starts to question if these phenomena are the works of the Virgin Mary or something much more sinister.",
+                "2021-03-31",
+                listOf("Horror"),
+                "bShgiEQoPnWdw4LBrYT5u18JF34.jpg"
             )
         )
         movies.add(
@@ -157,11 +157,11 @@ object DataMovie {
         tvShows.add(
             TvShowEntity(
                 3,
-                "Dragon Ball Z",
-                "Five years have passed since the fight with Piccolo Jr., and Goku now has a son, Gohan. The peace is interrupted when an alien named Raditz arrives on Earth in a spacecraft and tracks down Goku, revealing to him that that they are members of a near-extinct warrior race called the Saiyans.",
-                "26 April 1989",
-                listOf("Animation", "Sci-Fi & Fantasy", "Action & Adventure"),
-                "dBsDWUcdfbuZwglgyeeQ9ChRoS4.jpg"
+                "The Flash",
+                "After a particle accelerator causes a freak storm, CSI Investigator Barry Allen is struck by lightning and falls into a coma. Months later he awakens with the power of super speed, granting him the ability to move through Central City like an unseen guardian angel. Though initially excited by his newfound powers, Barry is shocked to discover he is not the only \"meta-human\" who was created in the wake of the accelerator explosion -- and not everyone is using their new powers for good. Barry partners with S.T.A.R. Labs and dedicates his life to protect the innocent. For now, only a few close friends and associates know that Barry is literally the fastest man alive, but it won't be long before the world learns what Barry Allen has become...The Flash.",
+                "2014-10-07",
+                listOf("Drama", "Sci-Fi & Fantasy"),
+                "lJA2RCMfsWoskqlQhXPSLFQGXEJ.jpg"
             )
         )
         tvShows.add(
@@ -187,11 +187,11 @@ object DataMovie {
         tvShows.add(
             TvShowEntity(
                 6,
-                "The Flash",
-                "After a particle accelerator causes a freak storm, CSI Investigator Barry Allen is struck by lightning and falls into a coma. Months later he awakens with the power of super speed, granting him the ability to move through Central City like an unseen guardian angel. Though initially excited by his newfound powers, Barry is shocked to discover he is not the only \"meta-human\" who was created in the wake of the accelerator explosion -- and not everyone is using their new powers for good. Barry partners with S.T.A.R. Labs and dedicates his life to protect the innocent. For now, only a few close friends and associates know that Barry is literally the fastest man alive, but it won't be long before the world learns what Barry Allen has become...The Flash.",
-                "7 October 2014",
-                listOf("Drama", "Sci-Fi & Fantasy"),
-                "lJA2RCMfsWoskqlQhXPSLFQGXEJ.jpg"
+                "Dragon Ball Z",
+                "Five years have passed since the fight with Piccolo Jr., and Goku now has a son, Gohan. The peace is interrupted when an alien named Raditz arrives on Earth in a spacecraft and tracks down Goku, revealing to him that that they are members of a near-extinct warrior race called the Saiyans.",
+                "26 April 1989",
+                listOf("Animation", "Sci-Fi & Fantasy", "Action & Adventure"),
+                "dBsDWUcdfbuZwglgyeeQ9ChRoS4.jpg"
             )
         )
         tvShows.add(

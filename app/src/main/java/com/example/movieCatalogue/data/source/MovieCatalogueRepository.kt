@@ -1,42 +1,31 @@
 package com.example.movieCatalogue.data.source
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.movieCatalogue.data.MovieEntity
 import com.example.movieCatalogue.data.TvShowEntity
-import com.example.movieCatalogue.data.source.remote.response.*
-import com.example.movieCatalogue.network.ApiService
-import com.example.movieCatalogue.utils.EspressoIdlingResource
-import retrofit2.Call
-import retrofit2.Callback
+import com.example.movieCatalogue.data.source.remote.RemoteDataSource
+import com.example.movieCatalogue.data.source.remote.response.ListMovieResponse
+import com.example.movieCatalogue.data.source.remote.response.ListTvShowResponse
+import com.example.movieCatalogue.data.source.remote.response.MovieResponse
+import com.example.movieCatalogue.data.source.remote.response.TvShowResponse
 import retrofit2.Response
 
-class MovieRepository(private val apiService: ApiService) : MovieDataSource {
+class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource) : MovieDataSource {
 
-    companion object {
-
-        private const val API_KEY = "68ff07774df041eef8a191fa74aa7bb2"
-    }
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
     override fun getAllMovie(): LiveData<List<MovieEntity>> {
         _isLoading.value = true
-        EspressoIdlingResource.increment()
         val movieResult = MutableLiveData<List<MovieEntity>>()
 
-        apiService.getAllMovie(API_KEY, "1").enqueue(object : Callback<ListMovieResponse> {
-            override fun onResponse(
-                call: Call<ListMovieResponse>,
-                response: Response<ListMovieResponse>
-            ) {
-                _isLoading.value = false
-                EspressoIdlingResource.decrement()
-
+        remoteDataSource.getAllMovie(object : RemoteDataSource.LoadMovieCallback {
+            override fun onAllMovieReceived(movieResponse: Response<ListMovieResponse>) {
                 val movieList = ArrayList<MovieEntity>()
-                response.body()?.results.let { resultMovie ->
+                _isLoading.value = false
+                movieResponse.body()?.results.let { resultMovie ->
                     if (resultMovie != null) {
                         for (result in resultMovie) {
                             val movie = MovieEntity(
@@ -55,31 +44,20 @@ class MovieRepository(private val apiService: ApiService) : MovieDataSource {
                 movieResult.postValue(movieList)
             }
 
-            override fun onFailure(call: Call<ListMovieResponse>, t: Throwable) {
-                _isLoading.value = false
-                Log.e("GetAllMovie", "onFailure: ${t.message.toString()}")
-            }
-
 
         })
         return movieResult
     }
 
     override fun getAllTvShow(): LiveData<List<TvShowEntity>> {
-        _isLoading.value = true
-        EspressoIdlingResource.increment()
         val tvShowResult = MutableLiveData<List<TvShowEntity>>()
+        _isLoading.value = true
 
-        apiService.getAllTvShow(API_KEY, "1").enqueue(object : Callback<ListTvShowResponse> {
-            override fun onResponse(
-                call: Call<ListTvShowResponse>,
-                response: Response<ListTvShowResponse>
-            ) {
+        remoteDataSource.getAllTvShow(object : RemoteDataSource.LoadTvShowCallback {
+            override fun onAllTvShowReceived(tvShowResponse: Response<ListTvShowResponse>) {
                 _isLoading.value = false
-                EspressoIdlingResource.decrement()
-
                 val tvShowList = ArrayList<TvShowEntity>()
-                response.body()?.results.let { resultTvShow ->
+                tvShowResponse.body()?.results.let { resultTvShow ->
                     if (resultTvShow != null) {
                         for (result in resultTvShow) {
                             val tvShow = TvShowEntity(
@@ -98,25 +76,20 @@ class MovieRepository(private val apiService: ApiService) : MovieDataSource {
                 tvShowResult.postValue(tvShowList)
             }
 
-            override fun onFailure(call: Call<ListTvShowResponse>, t: Throwable) {
-                _isLoading.value = false
-                Log.e("GetAllTvShow", "onFailure: ${t.message.toString()}")
-            }
         })
+
         return tvShowResult
     }
 
     override fun getMovieDetail(movieId: Int): LiveData<MovieEntity> {
-        _isLoading.value = true
-        EspressoIdlingResource.increment()
         val movieDetail = MutableLiveData<MovieEntity>()
+        _isLoading.value = true
 
-        apiService.getDetailMovie(movieId, API_KEY).enqueue(object : Callback<MovieResponse> {
-            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+        remoteDataSource.getMovieDetail(movieId, object : RemoteDataSource.MovieDetailCallback {
+            override fun onMovieDetailReceived(movieDetailResponse: Response<MovieResponse>) {
                 _isLoading.value = false
-                EspressoIdlingResource.decrement()
 
-                response.body().let { movieResponse ->
+                movieDetailResponse.body().let { movieResponse ->
                     if (movieResponse != null) {
                         if (movieResponse.id == movieId) {
                             val movie = MovieEntity(
@@ -133,33 +106,21 @@ class MovieRepository(private val apiService: ApiService) : MovieDataSource {
                     }
 
                 }
-
-            }
-
-            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                _isLoading.value = false
-                Log.e("GetDetailMovie", "onFailure: ${t.message.toString()}")
             }
 
         })
         return movieDetail
-
     }
 
     override fun getTvShowDetail(tvShowId: Int): LiveData<TvShowEntity> {
-        _isLoading.value = true
-        EspressoIdlingResource.increment()
         val tvShowDetail = MutableLiveData<TvShowEntity>()
+        _isLoading.value = true
 
-        apiService.getTvShowDetail(tvShowId, API_KEY).enqueue(object : Callback<TvShowResponse> {
-            override fun onResponse(
-                call: Call<TvShowResponse>,
-                response: Response<TvShowResponse>
-            ) {
+        remoteDataSource.getTvShowDetail(tvShowId, object : RemoteDataSource.TvShowDetailCallback {
+            override fun onTvShowDetailReceived(tvSHowDetailResponse: Response<TvShowResponse>) {
                 _isLoading.value = false
-                EspressoIdlingResource.decrement()
 
-                response.body().let { tvShowResponse ->
+                tvSHowDetailResponse.body().let { tvShowResponse ->
                     if (tvShowResponse != null) {
                         val tvShow = TvShowEntity(
                             tvShowResponse.id,
@@ -172,11 +133,6 @@ class MovieRepository(private val apiService: ApiService) : MovieDataSource {
                         tvShowDetail.postValue(tvShow)
                     }
                 }
-            }
-
-            override fun onFailure(call: Call<TvShowResponse>, t: Throwable) {
-                _isLoading.value = false
-                Log.e("GetDetailTvShow", "onFailure: ${t.message.toString()}")
             }
 
         })

@@ -1,24 +1,35 @@
 package com.example.movieCatalogue.ui.home
 
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.example.movieCatalogue.R
 import com.example.movieCatalogue.utils.DataMovie
+import com.example.movieCatalogue.utils.EspressoIdlingResource
 import org.hamcrest.CoreMatchers.allOf
-import org.junit.Rule
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 
 class HomeActivityTest {
     private val dummyMovie = DataMovie.generateDataMovie()
     private val dummyTvShow = DataMovie.generateDataTvShow()
 
-    @get:Rule
-    var activityRule = ActivityScenarioRule(HomeActivity::class.java)
+    @Before
+    fun setup(){
+        ActivityScenario.launch(HomeActivity::class.java)
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.idlingResource)
+    }
+
+    @After
+    fun tearDown() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.idlingResource)
+    }
 
     @Test
     fun loadMovie() {
@@ -52,7 +63,7 @@ class HomeActivityTest {
         onView(withId(R.id.text_title)).check(matches(isDisplayed()))
         onView(withId(R.id.text_title)).check(matches(withText(dummyMovie[2].title)))
         onView(withId(R.id.text_category)).check(matches(isDisplayed()))
-        onView(withId(R.id.text_category)).check(matches(withText(dummyMovie[2].category)))
+        onView(withId(R.id.text_category)).check(matches(withText(dummyMovie[2].category.toString())))
         onView(withId(R.id.text_synopsis)).check(matches(isDisplayed()))
         onView(withId(R.id.text_synopsis)).check(matches(withText(dummyMovie[2].synopsis)))
         onView(withId(R.id.text_release)).check(matches(isDisplayed()))
@@ -65,14 +76,14 @@ class HomeActivityTest {
         onView(withText("TV SHOWS")).perform(click())
         onView(withId(R.id.rv_tv_show)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                2,
+                3,
                 click()
             )
         )
         onView(withId(R.id.text_title)).check(matches(isDisplayed()))
         onView(withId(R.id.text_title)).check(matches(withText(dummyTvShow[2].title)))
         onView(withId(R.id.text_category)).check(matches(isDisplayed()))
-        onView(withId(R.id.text_category)).check(matches(withText(dummyTvShow[2].category)))
+        onView(withId(R.id.text_category)).check(matches(withText(dummyTvShow[2].category.toString())))
         onView(withId(R.id.text_synopsis)).check(matches(isDisplayed()))
         onView(withId(R.id.text_synopsis)).check(matches(withText(dummyTvShow[2].synopsis)))
         onView(withId(R.id.text_release)).check(matches(isDisplayed()))
