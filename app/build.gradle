@@ -2,17 +2,21 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
 }
 
 android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.example.moviecatalogue"
+        applicationId "com.why.moviecatalogue"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
+        buildConfigField "String", "API_KEY", "\"68ff07774df041eef8a191fa74aa7bb2\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
