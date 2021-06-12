@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.why.movieCatalogue.R
 import com.why.movieCatalogue.data.MovieEntity
 import com.why.movieCatalogue.data.TvShowEntity
 import com.why.movieCatalogue.databinding.ActivityDetailMovieBinding
@@ -33,6 +34,7 @@ class DetailMovieActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
+
         val extras = intent.extras
         if (extras != null) {
             val movieId = extras.getInt(EXTRA_MOVIE)
@@ -50,6 +52,11 @@ class DetailMovieActivity : AppCompatActivity() {
         })
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        overridePendingTransition(R.anim.from_left, R.anim.to_right)
+        return true
+    }
     private fun populateMovie(movieEntity: MovieEntity) {
         detailContentBinding.textTitle.text = movieEntity.title
         detailContentBinding.textRelease.text = movieEntity.releaseDate

@@ -72,6 +72,7 @@ class MovieCatalogueRepositoryTest {
 
         assertNotNull(movieDetail)
         assertEquals(movieDetails.movieId, movieDetail.id)
+        assertEquals(movieDetails.title, movieDetail.title)
     }
 
     @Test
@@ -86,5 +87,6 @@ class MovieCatalogueRepositoryTest {
 
         assertNotNull(tvShowDetail)
         assertEquals(tvShowDetails.tvShowId, tvShowDetail.id)
+        assertEquals(tvShowDetails.title, tvShowDetail.name)
     }
 }

@@ -49,6 +49,7 @@ class TvShowFragment : Fragment(), TvShowCallback {
                         val intent = Intent(it, DetailMovieActivity::class.java)
                         intent.putExtra(DetailMovieActivity.EXTRA_TV_SHOW, data.tvShowId)
                         it.startActivity(intent)
+                        activity?.overridePendingTransition(R.anim.from_right, R.anim.to_left)
                     }
                 }
 

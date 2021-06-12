@@ -48,6 +48,7 @@ class MovieFragment : Fragment(), MovieCallback {
                         val intent = Intent(it, DetailMovieActivity::class.java)
                         intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, data.movieId)
                         it.startActivity(intent)
+                        activity?.overridePendingTransition(R.anim.from_right, R.anim.to_left)
                     }
                 }
 
