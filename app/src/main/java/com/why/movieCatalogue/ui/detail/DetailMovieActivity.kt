@@ -52,6 +52,16 @@ class DetailMovieActivity : AppCompatActivity() {
         })
     }
 
+    override fun finish() {
+        overridePendingTransition(R.anim.from_left, R.anim.to_right)
+        super.finish()
+    }
+
+    override fun onBackPressed() {
+        finish()
+        super.onBackPressed()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         overridePendingTransition(R.anim.from_left, R.anim.to_right)
