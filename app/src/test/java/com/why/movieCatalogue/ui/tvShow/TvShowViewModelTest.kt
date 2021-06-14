@@ -62,6 +62,8 @@ class TvShowViewModelTest : KoinTest {
 
         `when`(movieRepository.getAllTvShow()).thenReturn(tvShows)
         val tvShowEntity = viewModel.getTvShows().value
+        verify(movieRepository).getAllTvShow()
+
         assertNotNull(tvShowEntity)
         assertEquals(12, tvShowEntity?.size)
 
