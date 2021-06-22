@@ -2,9 +2,9 @@ package com.why.movieCatalogue.ui.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.why.movieCatalogue.data.MovieEntity
-import com.why.movieCatalogue.data.TvShowEntity
-import com.why.movieCatalogue.data.source.MovieCatalogueRepository
+import com.why.movieCatalogue.data.source.local.entity.MovieEntity
+import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
+import com.why.movieCatalogue.data.MovieCatalogueRepository
 
 class DetailMovieViewModel(private val movieCatalogueRepository: MovieCatalogueRepository) : ViewModel() {
     private var movieId: Int = 0
@@ -18,11 +18,11 @@ class DetailMovieViewModel(private val movieCatalogueRepository: MovieCatalogueR
         this.tvShowId = tvShowId
     }
 
-    fun getMovie(): LiveData<MovieEntity> = movieCatalogueRepository.getMovieDetail(movieId)
+    fun getMovie() = movieCatalogueRepository.getMovieDetail(movieId)
 
-    fun getTvShow(): LiveData<TvShowEntity> = movieCatalogueRepository.getTvShowDetail(tvShowId)
+    fun getTvShow() = movieCatalogueRepository.getTvShowDetail(tvShowId)
 
-    fun getLoading(): LiveData<Boolean> = movieCatalogueRepository.isLoading
+//    fun getLoading(): LiveData<Boolean> = movieCatalogueRepository.isLoading
 
 
 }

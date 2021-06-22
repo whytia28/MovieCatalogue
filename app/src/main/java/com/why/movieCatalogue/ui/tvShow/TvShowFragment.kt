@@ -5,19 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.why.movieCatalogue.R
-import com.why.movieCatalogue.data.TvShowEntity
+import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
 import com.why.movieCatalogue.databinding.FragmentTvShowBinding
 import com.why.movieCatalogue.ui.detail.DetailMovieActivity
+import com.why.movieCatalogue.ui.home.HomeActivity
+import com.why.movieCatalogue.vo.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TvShowFragment : Fragment(), TvShowCallback {
 
     private val viewModel: TvShowViewModel by viewModel()
     private lateinit var fragmentTvShowBinding: FragmentTvShowBinding
+    private lateinit var adapter: TvShowAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +36,20 @@ class TvShowFragment : Fragment(), TvShowCallback {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val adapter = TvShowAdapter(this)
+            (activity as HomeActivity).setActionBarTitle(getString(R.string.tv_show))
+
+            adapter = TvShowAdapter(this)
             viewModel.getTvShows().observe(viewLifecycleOwner, { tvShows ->
-                adapter.setTvShows(tvShows)
-                adapter.notifyDataSetChanged()
+                if (tvShows != null) {
+                    when (tvShows.status) {
+                        Status.LOADING -> fragmentTvShowBinding.progressBar.visibility = View.VISIBLE
+                        Status.SUCCESS -> {
+                            adapter.submitList(tvShows.data)
+                            fragmentTvShowBinding.progressBar.visibility = View.GONE
+                        }
+                        Status.ERROR -> Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
             })
 
             with(fragmentTvShowBinding.rvTvShow) {
@@ -47,7 +61,7 @@ class TvShowFragment : Fragment(), TvShowCallback {
                 override fun onItemClicked(data: TvShowEntity) {
                     activity?.let {
                         val intent = Intent(it, DetailMovieActivity::class.java)
-                        intent.putExtra(DetailMovieActivity.EXTRA_TV_SHOW, data.tvShowId)
+                        intent.putExtra(DetailMovieActivity.EXTRA_TV_SHOW, data.id)
                         it.startActivity(intent)
                         activity?.overridePendingTransition(R.anim.from_right, R.anim.to_left)
                     }
@@ -57,9 +71,9 @@ class TvShowFragment : Fragment(), TvShowCallback {
 
         }
 
-        viewModel.getLoading().observe(viewLifecycleOwner, {
-            fragmentTvShowBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-        })
+//        viewModel.getLoading().observe(viewLifecycleOwner, {
+//            fragmentTvShowBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+//        })
     }
 
     override fun onShareClick(tvShow: TvShowEntity) {

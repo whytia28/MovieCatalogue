@@ -2,23 +2,31 @@ package com.why.movieCatalogue.ui.tvShow
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.why.movieCatalogue.data.TvShowEntity
+import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
 import com.why.movieCatalogue.databinding.ItemsTvShowBinding
 
 
 class TvShowAdapter(private val callback: TvShowCallback) :
-    RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
+    PagedListAdapter<TvShowEntity, TvShowAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
+            override fun areItemsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 
     private var onItemClickCallback: OnItemClickCallback? = null
-    private var listTvShow = ArrayList<TvShowEntity>()
 
-    fun setTvShows(tvShows: List<TvShowEntity>?) {
-        if (tvShows == null) return
-        this.listTvShow.clear()
-        this.listTvShow.addAll(tvShows)
-    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -30,11 +38,11 @@ class TvShowAdapter(private val callback: TvShowCallback) :
     }
 
     override fun onBindViewHolder(holder: TvShowAdapter.TvShowViewHolder, position: Int) {
-        val tvShow = listTvShow[position]
-        holder.bind(tvShow)
+        val tvShow = getItem(position)
+        if (tvShow != null) {
+            holder.bind(tvShow)
+        }
     }
-
-    override fun getItemCount(): Int = listTvShow.size
 
     inner class TvShowViewHolder(private val binding: ItemsTvShowBinding) :
         RecyclerView.ViewHolder(binding.root) {

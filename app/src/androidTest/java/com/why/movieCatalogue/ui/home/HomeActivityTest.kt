@@ -20,6 +20,7 @@ class HomeActivityTest {
     private val dummyMovie = DataMovie.generateDataMovie()
     private val dummyTvShow = DataMovie.generateDataTvShow()
 
+
     @Before
     fun setup(){
         ActivityScenario.launch(HomeActivity::class.java)
@@ -76,7 +77,7 @@ class HomeActivityTest {
         onView(withText("TV SHOWS")).perform(click())
         onView(withId(R.id.rv_tv_show)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                2,
+                3,
                 click()
             )
         )

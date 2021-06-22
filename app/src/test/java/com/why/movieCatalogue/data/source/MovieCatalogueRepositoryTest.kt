@@ -71,7 +71,7 @@ class MovieCatalogueRepositoryTest {
         verify(remoteData).getMovieDetail(eq(movieId), any())
 
         assertNotNull(movieDetail)
-        assertEquals(movieDetails.movieId, movieDetail.id)
+        assertEquals(movieDetails.id, movieDetail.id)
         assertEquals(movieDetails.title, movieDetail.title)
     }
 
@@ -86,7 +86,7 @@ class MovieCatalogueRepositoryTest {
         verify(remoteData).getTvShowDetail(eq(tvShowId), any())
 
         assertNotNull(tvShowDetail)
-        assertEquals(tvShowDetails.tvShowId, tvShowDetail.id)
+        assertEquals(tvShowDetails.id, tvShowDetail.id)
         assertEquals(tvShowDetails.title, tvShowDetail.name)
     }
 }

@@ -2,8 +2,9 @@ package com.why.movieCatalogue.data.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.why.movieCatalogue.data.MovieEntity
-import com.why.movieCatalogue.data.TvShowEntity
+import com.why.movieCatalogue.data.MovieDataSource
+import com.why.movieCatalogue.data.source.local.entity.MovieEntity
+import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
 import com.why.movieCatalogue.data.source.remote.RemoteDataSource
 import com.why.movieCatalogue.data.source.remote.response.MovieResponse
 import com.why.movieCatalogue.data.source.remote.response.ResultMovie

@@ -1,14 +1,17 @@
 package com.why.movieCatalogue.ui.detail
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.why.movieCatalogue.R
-import com.why.movieCatalogue.data.MovieEntity
-import com.why.movieCatalogue.data.TvShowEntity
+import com.why.movieCatalogue.data.source.local.entity.MovieEntity
+import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
 import com.why.movieCatalogue.databinding.ActivityDetailMovieBinding
 import com.why.movieCatalogue.databinding.ContentDetailMovieBinding
+import com.why.movieCatalogue.vo.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailMovieActivity : AppCompatActivity() {
@@ -34,22 +37,46 @@ class DetailMovieActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
-
         val extras = intent.extras
         if (extras != null) {
             val movieId = extras.getInt(EXTRA_MOVIE)
             val tvShowId = extras.getInt(EXTRA_TV_SHOW)
 
             viewModel.setSelectedMovie(movieId)
-            viewModel.getMovie().observe(this, { movie -> populateMovie(movie) })
+            viewModel.getMovie().observe(this, { movie ->
+                if (movie != null) {
+                    when (movie.status) {
+                        Status.LOADING -> detailContentBinding.progressBar.visibility = View.VISIBLE
+                        Status.SUCCESS -> {
+                            if (movie.data != null) {
+                                detailContentBinding.progressBar.visibility = View.GONE
+                                populateMovie(movie.data)
+                            }
+                        }
+                        Status.ERROR -> Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
 
             viewModel.setSelectedTvShow(tvShowId)
-            viewModel.getTvShow().observe(this, { tvShow -> populateMovie(tvShow) })
+            viewModel.getTvShow()
+                .observe(this, { tvShow ->
+                    if (tvShow != null) {
+                        when (tvShow.status) {
+                            Status.LOADING -> detailContentBinding.progressBar.visibility = View.VISIBLE
+                            Status.SUCCESS -> {
+                                detailContentBinding.progressBar.visibility = View.GONE
+                                tvShow.data?.let { populateMovie(it) }
+                            }
+                            Status.ERROR -> Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
 
         }
-        viewModel.getLoading().observe(this, {
-            detailContentBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-        })
+//        viewModel.getLoading().observe(this, {
+//            detailContentBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
+//        })
     }
 
     override fun finish() {
@@ -67,6 +94,7 @@ class DetailMovieActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.from_left, R.anim.to_right)
         return true
     }
+
     private fun populateMovie(movieEntity: MovieEntity) {
         detailContentBinding.textTitle.text = movieEntity.title
         detailContentBinding.textRelease.text = movieEntity.releaseDate
@@ -88,5 +116,6 @@ class DetailMovieActivity : AppCompatActivity() {
             .load("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${tvShowEntity.imagePoster}")
             .into(detailContentBinding.imagePoster)
     }
+
 
 }

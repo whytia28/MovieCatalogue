@@ -1,13 +1,14 @@
 package com.why.movieCatalogue.utils
 
 import com.why.movieCatalogue.BuildConfig.BASE_URL
-import com.why.movieCatalogue.data.source.MovieCatalogueRepository
+import com.why.movieCatalogue.data.MovieCatalogueRepository
 import com.why.movieCatalogue.data.source.remote.RemoteDataSource
 import com.why.movieCatalogue.network.ApiService
 import com.why.movieCatalogue.ui.detail.DetailMovieViewModel
 import com.why.movieCatalogue.ui.movie.MovieViewModel
 import com.why.movieCatalogue.ui.tvShow.TvShowViewModel
 import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -28,7 +29,7 @@ val appModule = module {
 
         retrofit.create(ApiService::class.java)
     }
-    single { MovieCatalogueRepository(get()) }
+    factory { MovieCatalogueRepository(get(), androidContext()) }
     factory { RemoteDataSource(get()) }
     viewModel { DetailMovieViewModel(get()) }
     viewModel { MovieViewModel(get()) }

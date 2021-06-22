@@ -4,7 +4,10 @@
 
     <string name="title">Title</string>
     <string name="movie">Movies</string>
+    <string name="favorite_movie">Movie</string>
+    <string name="favorite">Favorites</string>
     <string name="tv_show">TV Shows</string>
+    <string name="favorite_tv_show">TV Show</string>
     <string name="release_date">Release</string>
     <string name="synopsis">Synopsis</string>
     <string name="category">Category</string>
@@ -13,4 +16,7 @@
     <string name="by">by</string>
     <string name="name">Wahyu Widodo</string>
     <string name="movie_poster">movie poster</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.verify
-import com.why.movieCatalogue.data.MovieEntity
-import com.why.movieCatalogue.data.TvShowEntity
-import com.why.movieCatalogue.data.source.MovieCatalogueRepository
+import com.why.movieCatalogue.data.source.local.entity.MovieEntity
+import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
+import com.why.movieCatalogue.data.MovieCatalogueRepository
 import com.why.movieCatalogue.utils.DataMovie
 import com.why.movieCatalogue.utils.appModule
 import org.junit.After
@@ -32,8 +32,8 @@ class DetailMovieViewModelTest : KoinTest {
 
     private val dummyMovie = DataMovie.generateDataMovie()[2]
     private val dummyTvShow = DataMovie.generateDataTvShow()[2]
-    private val movieId = dummyMovie.movieId
-    private val tvShowId = dummyTvShow.tvShowId
+    private val movieId = dummyMovie.id
+    private val tvShowId = dummyTvShow.id
 
     private val viewModel by inject<DetailMovieViewModel>()
 

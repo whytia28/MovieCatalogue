@@ -23,9 +23,8 @@
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <include
-            android:id="@+id/detail_content"
-            layout="@layout/content_detail_movie" />
+        <include layout="@layout/content_detail_movie"
+            android:id="@+id/detail_content"/>
 
     </androidx.core.widget.NestedScrollView>
 

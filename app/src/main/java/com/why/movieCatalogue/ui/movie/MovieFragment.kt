@@ -5,20 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.why.movieCatalogue.R
-import com.why.movieCatalogue.data.MovieEntity
+import com.why.movieCatalogue.data.source.local.entity.MovieEntity
 import com.why.movieCatalogue.databinding.FragmentMovieBinding
 import com.why.movieCatalogue.ui.detail.DetailMovieActivity
+import com.why.movieCatalogue.ui.home.HomeActivity
+import com.why.movieCatalogue.vo.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MovieFragment : Fragment(), MovieCallback {
 
-    private val viewModel: MovieViewModel by viewModel()
+    private val viewModel: MovieViewModel by viewModel( )
     private lateinit var fragmentMovieBinding: FragmentMovieBinding
+    private lateinit var movieAdapter: MovieAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,10 +35,22 @@ class MovieFragment : Fragment(), MovieCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val movieAdapter = MovieAdapter(this)
+            (activity as HomeActivity).setActionBarTitle(getString(R.string.movie))
+
+            movieAdapter = MovieAdapter(this)
             viewModel.getMovies().observe(viewLifecycleOwner, { movies ->
-                movieAdapter.setMovies(movies)
-                movieAdapter.notifyDataSetChanged()
+                if (movies != null) {
+                    when (movies.status) {
+                        Status.LOADING -> fragmentMovieBinding.progressBar.visibility = View.VISIBLE
+                        Status.SUCCESS -> {
+                            movieAdapter.submitList(movies.data)
+                            fragmentMovieBinding.progressBar.visibility = View.GONE
+                        }
+                        Status.ERROR -> {
+                            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             })
 
             with(fragmentMovieBinding.rvMovie) {
@@ -46,7 +62,7 @@ class MovieFragment : Fragment(), MovieCallback {
                 override fun onItemClicked(data: MovieEntity) {
                     activity?.let {
                         val intent = Intent(it, DetailMovieActivity::class.java)
-                        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, data.movieId)
+                        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, data.id)
                         it.startActivity(intent)
                         activity?.overridePendingTransition(R.anim.from_right, R.anim.to_left)
                     }
@@ -54,9 +70,6 @@ class MovieFragment : Fragment(), MovieCallback {
 
             })
 
-            viewModel.getLoading().observe(viewLifecycleOwner, {
-                fragmentMovieBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-            })
         }
     }
 
