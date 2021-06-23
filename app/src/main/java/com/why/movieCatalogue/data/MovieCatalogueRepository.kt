@@ -25,7 +25,7 @@ class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, c
     private val localDataSource = LocalDataSource(database.movieCatalogueDao())
     private val appExecutors = AppExecutors()
 
-    override fun getAllMovie(): LiveData<Resource<PagedList<MovieEntity>>> {
+    override fun getAllMovie(sort: String): LiveData<Resource<PagedList<MovieEntity>>> {
 
         return object :
             NetworkBoundResource<PagedList<MovieEntity>, List<ResultMovie>>(appExecutors) {
@@ -35,7 +35,7 @@ class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, c
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return LivePagedListBuilder(localDataSource.getAllMovies(), config).build()
+                return LivePagedListBuilder(localDataSource.getAllMovies(sort), config).build()
             }
 
             override fun shouldFetch(data: PagedList<MovieEntity>?): Boolean =
@@ -65,7 +65,7 @@ class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, c
 
     }
 
-    override fun getAllTvShow(): LiveData<Resource<PagedList<TvShowEntity>>> {
+    override fun getAllTvShow(sort: String): LiveData<Resource<PagedList<TvShowEntity>>> {
         return object :
             NetworkBoundResource<PagedList<TvShowEntity>, List<ResultTvShow>>(appExecutors) {
             override fun loadFromDB(): LiveData<PagedList<TvShowEntity>> {
@@ -74,7 +74,7 @@ class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, c
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return LivePagedListBuilder(localDataSource.getAllTvShows(), config).build()
+                return LivePagedListBuilder(localDataSource.getAllTvShows(sort), config).build()
             }
 
             override fun shouldFetch(data: PagedList<TvShowEntity>?): Boolean =

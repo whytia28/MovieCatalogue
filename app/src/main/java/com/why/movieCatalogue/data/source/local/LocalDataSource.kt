@@ -5,6 +5,9 @@ import androidx.paging.DataSource
 import com.why.movieCatalogue.data.source.local.entity.MovieEntity
 import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
 import com.why.movieCatalogue.data.source.local.room.MovieCatalogueDao
+import com.why.movieCatalogue.utils.SortUtils
+import com.why.movieCatalogue.utils.SortUtils.MOVIE_ENTITIES
+import com.why.movieCatalogue.utils.SortUtils.TV_SHOW_ENTITIES
 
 class LocalDataSource(private val mMovieCatalogueDao: MovieCatalogueDao) {
     companion object {
@@ -14,9 +17,9 @@ class LocalDataSource(private val mMovieCatalogueDao: MovieCatalogueDao) {
             INSTANCE ?: LocalDataSource(movieCatalogueDao)
     }
 
-    fun getAllMovies(): DataSource.Factory<Int, MovieEntity> = mMovieCatalogueDao.getAllMovies()
+    fun getAllMovies(sort: String): DataSource.Factory<Int, MovieEntity> = mMovieCatalogueDao.getAllMovies(SortUtils.getSortedQuery(sort, MOVIE_ENTITIES))
 
-    fun getAllTvShows(): DataSource.Factory<Int, TvShowEntity> = mMovieCatalogueDao.getAllTvShow()
+    fun getAllTvShows(sort: String): DataSource.Factory<Int, TvShowEntity> = mMovieCatalogueDao.getAllTvShow(SortUtils.getSortedQuery(sort, TV_SHOW_ENTITIES))
 
     fun getMovieDetail(movieId: Int): LiveData<MovieEntity> =
         mMovieCatalogueDao.getMovieById(movieId)

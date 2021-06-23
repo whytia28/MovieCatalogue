@@ -17,4 +17,7 @@
     <string name="overview">Overview</string>
     <string name="undo">Cancel delete favorite?</string>
     <string name="ok">OK</string>
+    <string name="menu_asc">Title (A-Z)</string>
+    <string name="menu_des">Title (Z-A)</string>
+    <string name="menu_random">Random</string>
 </resources>

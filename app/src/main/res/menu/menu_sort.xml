@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single"
+        app:showAsAction="always"
+        android:visible="true">
+
+        <item
+            android:id="@+id/action_asc"
+            android:checked="true"
+            android:icon="@drawable/ic_down"
+            android:title="@string/menu_asc" />
+
+        <item
+            android:id="@+id/action_desc"
+            android:checked="false"
+            android:icon="@drawable/ic_up"
+            android:title="@string/menu_des" />
+
+        <item
+            android:id="@+id/action_random"
+            android:checked="false"
+            android:icon="@drawable/ic_random"
+            android:title="@string/menu_random" />
+
+    </group>
+
+</menu>

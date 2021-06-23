@@ -3,16 +3,17 @@ package com.why.movieCatalogue.data.source.local.room
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.why.movieCatalogue.data.source.local.entity.MovieEntity
 import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
 
 @Dao
 interface MovieCatalogueDao {
-    @Query("SELECT * FROM movieEntities")
-    fun getAllMovies(): DataSource.Factory<Int, MovieEntity>
+    @RawQuery(observedEntities = [MovieEntity::class])
+    fun getAllMovies(query: SimpleSQLiteQuery): DataSource.Factory<Int, MovieEntity>
 
-    @Query("SELECT * FROM tvShowEntities")
-    fun getAllTvShow(): DataSource.Factory<Int, TvShowEntity>
+    @RawQuery(observedEntities = [TvShowEntity::class])
+    fun getAllTvShow(query: SimpleSQLiteQuery): DataSource.Factory<Int, TvShowEntity>
 
     @Query("SELECT * FROM movieEntities WHERE id = :id")
     fun getMovieById(id: Int): LiveData<MovieEntity>

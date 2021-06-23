@@ -21,7 +21,6 @@ class SplashScreenActivity : AppCompatActivity() {
         val activitySplashScreenBinding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(activitySplashScreenBinding.root)
 
-        supportActionBar?.hide()
 
         Glide.with(this)
             .load(R.drawable.background)

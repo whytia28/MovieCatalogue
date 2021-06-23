@@ -5,5 +5,5 @@ import com.why.movieCatalogue.data.MovieCatalogueRepository
 
 class TvShowViewModel(private val movieCatalogueRepository: MovieCatalogueRepository) :
     ViewModel() {
-    fun getTvShows() = movieCatalogueRepository.getAllTvShow()
+    fun getTvShows(sort: String) = movieCatalogueRepository.getAllTvShow(sort)
 }

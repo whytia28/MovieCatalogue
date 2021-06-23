@@ -7,9 +7,9 @@ import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
 import com.why.movieCatalogue.vo.Resource
 
 interface MovieDataSource {
-    fun getAllMovie(): LiveData<Resource<PagedList<MovieEntity>>>
+    fun getAllMovie(sort: String): LiveData<Resource<PagedList<MovieEntity>>>
 
-    fun getAllTvShow(): LiveData<Resource<PagedList<TvShowEntity>>>
+    fun getAllTvShow(sort: String): LiveData<Resource<PagedList<TvShowEntity>>>
 
     fun getMovieDetail(movieId: Int): LiveData<Resource<MovieEntity>>
 
