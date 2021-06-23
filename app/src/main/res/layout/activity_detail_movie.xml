@@ -19,12 +19,14 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/background_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <include layout="@layout/content_detail_movie"
-            android:id="@+id/detail_content"/>
+        <include
+            android:id="@+id/detail_content"
+            layout="@layout/content_detail_movie" />
 
     </androidx.core.widget.NestedScrollView>
 

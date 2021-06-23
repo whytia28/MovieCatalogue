@@ -5,6 +5,8 @@ import com.why.movieCatalogue.data.MovieCatalogueRepository
 import com.why.movieCatalogue.data.source.remote.RemoteDataSource
 import com.why.movieCatalogue.network.ApiService
 import com.why.movieCatalogue.ui.detail.DetailMovieViewModel
+import com.why.movieCatalogue.ui.favorite.movie.FavoriteMovieViewModel
+import com.why.movieCatalogue.ui.favorite.tvShow.FavoriteTvShowViewModel
 import com.why.movieCatalogue.ui.movie.MovieViewModel
 import com.why.movieCatalogue.ui.tvShow.TvShowViewModel
 import okhttp3.OkHttpClient
@@ -34,5 +36,7 @@ val appModule = module {
     viewModel { DetailMovieViewModel(get()) }
     viewModel { MovieViewModel(get()) }
     viewModel { TvShowViewModel(get()) }
+    viewModel { FavoriteMovieViewModel(get()) }
+    viewModel { FavoriteTvShowViewModel(get()) }
 
 }

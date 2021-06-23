@@ -13,6 +13,7 @@ import com.why.movieCatalogue.R
 import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
 import com.why.movieCatalogue.databinding.FragmentTvShowBinding
 import com.why.movieCatalogue.ui.detail.DetailMovieActivity
+import com.why.movieCatalogue.ui.detail.DetailMovieViewModel.Companion.TV_SHOW
 import com.why.movieCatalogue.ui.home.HomeActivity
 import com.why.movieCatalogue.vo.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,9 +43,11 @@ class TvShowFragment : Fragment(), TvShowCallback {
             viewModel.getTvShows().observe(viewLifecycleOwner, { tvShows ->
                 if (tvShows != null) {
                     when (tvShows.status) {
-                        Status.LOADING -> fragmentTvShowBinding.progressBar.visibility = View.VISIBLE
+                        Status.LOADING -> fragmentTvShowBinding.progressBar.visibility =
+                            View.VISIBLE
                         Status.SUCCESS -> {
                             adapter.submitList(tvShows.data)
+                            adapter.notifyDataSetChanged()
                             fragmentTvShowBinding.progressBar.visibility = View.GONE
                         }
                         Status.ERROR -> Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
@@ -52,16 +55,16 @@ class TvShowFragment : Fragment(), TvShowCallback {
                 }
             })
 
-            with(fragmentTvShowBinding.rvTvShow) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                this.adapter = adapter
-            }
+            fragmentTvShowBinding.rvTvShow.layoutManager = LinearLayoutManager(context)
+            fragmentTvShowBinding.rvTvShow.setHasFixedSize(true)
+            fragmentTvShowBinding.rvTvShow.adapter = adapter
+
             adapter.setOnItemClicked(object : TvShowAdapter.OnItemClickCallback {
                 override fun onItemClicked(data: TvShowEntity) {
                     activity?.let {
                         val intent = Intent(it, DetailMovieActivity::class.java)
                         intent.putExtra(DetailMovieActivity.EXTRA_TV_SHOW, data.id)
+                        intent.putExtra(DetailMovieActivity.EXTRA_CATEGORY, TV_SHOW)
                         it.startActivity(intent)
                         activity?.overridePendingTransition(R.anim.from_right, R.anim.to_left)
                     }
@@ -71,9 +74,6 @@ class TvShowFragment : Fragment(), TvShowCallback {
 
         }
 
-//        viewModel.getLoading().observe(viewLifecycleOwner, {
-//            fragmentTvShowBinding.progressBar.visibility = if (it) View.VISIBLE else View.GONE
-//        })
     }
 
     override fun onShareClick(tvShow: TvShowEntity) {

@@ -17,7 +17,8 @@ import com.why.movieCatalogue.data.source.remote.response.TvShowResponse
 import com.why.movieCatalogue.utils.AppExecutors
 import com.why.movieCatalogue.vo.Resource
 
-class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, context: Context) : MovieDataSource {
+class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, context: Context) :
+    MovieDataSource {
 
 
     private val database = MovieCatalogueDatabase.getInstance(context)
@@ -47,7 +48,7 @@ class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, c
                 val movieList = ArrayList<MovieEntity>()
                 for (result in data) {
                     val movie = MovieEntity(
-                        result.id,
+                        id = result.id,
                         result.title,
                         result.overview,
                         result.releaseDate,
@@ -108,20 +109,20 @@ class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, c
                 localDataSource.getMovieDetail(movieId)
 
             override fun shouldFetch(data: MovieEntity?): Boolean =
-                data == null || data.imagePoster.isNullOrEmpty()
+                data != null && data.category == ""
 
 
             override fun createCall(): LiveData<ApiResponse<MovieResponse>> =
                 remoteDataSource.getMovieDetail(movieId)
 
             override fun saveCallResult(data: MovieResponse) {
-                val genres = StringBuilder().append("")
+                val genre = StringBuilder().append("")
 
                 for (i in data.genres.indices) {
                     if (i < data.genres.size - 1) {
-                        genres.append("${data.genres[i].name}, ")
+                        genre.append("${data.genres[i].name}, ")
                     } else {
-                        genres.append(data.genres[i].name)
+                        genre.append(data.genres[i].name)
                     }
                 }
 
@@ -130,7 +131,7 @@ class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, c
                     data.title,
                     data.overview,
                     data.releaseDate,
-                    data.genres.toString(),
+                    genre.toString(),
                     data.posterPath,
                     false
 
@@ -147,7 +148,7 @@ class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, c
                 localDataSource.getTvShowDetail(tvShowId)
 
             override fun shouldFetch(data: TvShowEntity?): Boolean =
-                data == null || data.imagePoster.isNullOrEmpty()
+                data != null && data.category == ""
 
             override fun createCall(): LiveData<ApiResponse<TvShowResponse>> =
                 remoteDataSource.getTvShowDetail(tvShowId)
@@ -167,7 +168,7 @@ class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, c
                     data.name,
                     data.overview,
                     data.firstAirDate,
-                    data.genres.toString(),
+                    genres.toString(),
                     data.posterPath,
                     false
                 )

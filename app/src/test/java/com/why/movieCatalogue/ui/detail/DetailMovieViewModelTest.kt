@@ -72,12 +72,12 @@ class DetailMovieViewModelTest : KoinTest {
 
         viewModel.setSelectedMovie(movieId)
         `when`(movieRepository.getMovieDetail(movieId)).thenReturn(movieDetail)
-        val movie = viewModel.getMovie().value
+        val movie = viewModel.getDetailMovie().value
         verify(movieRepository).getMovieDetail(movieId)
         assertNotNull(movie)
         assertEquals(movie, dummyMovie)
 
-        viewModel.getMovie().observeForever(movieObserver)
+        viewModel.getDetailMovie().observeForever(movieObserver)
         verify(movieObserver).onChanged(dummyMovie)
 
     }
@@ -90,12 +90,12 @@ class DetailMovieViewModelTest : KoinTest {
 
         viewModel.setSelectedTvShow(tvShowId)
         `when`(movieRepository.getTvShowDetail(tvShowId)).thenReturn(tvShowDetail)
-        val tvShow = viewModel.getTvShow().value
+        val tvShow = viewModel.getDetailTvShow().value
         verify(movieRepository).getTvShowDetail(tvShowId)
         assertNotNull(tvShow)
         assertEquals(tvShow, dummyTvShow)
 
-        viewModel.getTvShow().observeForever(tvShowObserver)
+        viewModel.getDetailTvShow().observeForever(tvShowObserver)
         verify(tvShowObserver).onChanged(dummyTvShow)
     }
 }

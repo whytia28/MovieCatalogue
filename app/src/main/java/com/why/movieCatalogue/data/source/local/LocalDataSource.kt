@@ -18,9 +18,11 @@ class LocalDataSource(private val mMovieCatalogueDao: MovieCatalogueDao) {
 
     fun getAllTvShows(): DataSource.Factory<Int, TvShowEntity> = mMovieCatalogueDao.getAllTvShow()
 
-    fun getMovieDetail(movieId: Int): LiveData<MovieEntity> = mMovieCatalogueDao.getMovieById(movieId)
+    fun getMovieDetail(movieId: Int): LiveData<MovieEntity> =
+        mMovieCatalogueDao.getMovieById(movieId)
 
-    fun getTvShowDetail(tvShowId: Int): LiveData<TvShowEntity> = mMovieCatalogueDao.getTvSHowById(tvShowId)
+    fun getTvShowDetail(tvShowId: Int): LiveData<TvShowEntity> =
+        mMovieCatalogueDao.getTvSHowById(tvShowId)
 
     fun insertMovie(movie: List<MovieEntity>) = mMovieCatalogueDao.insertMovie(movie)
 
@@ -49,8 +51,6 @@ class LocalDataSource(private val mMovieCatalogueDao: MovieCatalogueDao) {
         movie.isFav = newState
         mMovieCatalogueDao.updateMovie(movie)
     }
-
-
 
 
 }

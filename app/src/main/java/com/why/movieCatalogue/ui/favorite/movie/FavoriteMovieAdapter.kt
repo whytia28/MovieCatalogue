@@ -1,4 +1,4 @@
-package com.why.movieCatalogue.ui.tvShow
+package com.why.movieCatalogue.ui.favorite.movie
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -14,20 +14,21 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.why.movieCatalogue.R
-import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
+import com.why.movieCatalogue.data.source.local.entity.MovieEntity
 import com.why.movieCatalogue.databinding.ItemsMovieBinding
+import com.why.movieCatalogue.ui.movie.MovieCallback
 
+class FavoriteMovieAdapter(private val callback: MovieCallback) :
+    PagedListAdapter<MovieEntity, FavoriteMovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
-class TvShowAdapter(private val callback: TvShowCallback) :
-    PagedListAdapter<TvShowEntity, TvShowAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
-            override fun areItemsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
+            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
                 return oldItem == newItem
             }
         }
@@ -35,37 +36,38 @@ class TvShowAdapter(private val callback: TvShowCallback) :
 
     private var onItemClickCallback: OnItemClickCallback? = null
 
+    fun getSwipedData(swipedPosition: Int): MovieEntity? = getItem(swipedPosition)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): TvShowAdapter.TvShowViewHolder {
-        val itemTvShowBinding =
+    ): MovieViewHolder {
+        val itemMovieBinding =
             ItemsMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TvShowViewHolder(itemTvShowBinding)
+        return MovieViewHolder(itemMovieBinding)
     }
 
-    override fun onBindViewHolder(holder: TvShowAdapter.TvShowViewHolder, position: Int) {
-        val tvShow = getItem(position)
-        if (tvShow != null) {
-            holder.bind(tvShow)
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+        val movie = getItem(position)
+        if (movie != null) {
+            holder.bind(movie)
         }
     }
 
-    inner class TvShowViewHolder(private val binding: ItemsMovieBinding) :
+    inner class MovieViewHolder(private val binding: ItemsMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(tvShow: TvShowEntity) {
+        fun bind(movie: MovieEntity) {
             with(binding) {
-                tvItemTitle.text = tvShow.title
-                tvItemRelease.text = tvShow.releaseDate
-                tvItemSynopsis.text = tvShow.synopsis
+                tvItemTitle.text = movie.title
+                tvItemRelease.text = movie.releaseDate
+                tvItemSynopsis.text = movie.synopsis
                 itemView.setOnClickListener {
-                    onItemClickCallback?.onItemClicked(tvShow)
+                    onItemClickCallback?.onItemClicked(movie)
                 }
-                imgShare.setOnClickListener { callback.onShareClick(tvShow) }
+                imgShare.setOnClickListener { callback.onShareClick(movie) }
                 Glide.with(root.context)
                     .asBitmap()
-                    .load("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${tvShow.imagePoster}")
+                    .load("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${movie.imagePoster}")
                     .apply(RequestOptions.placeholderOf(R.drawable.ic_movie_placeholder))
                     .transform(RoundedCorners(28))
                     .into(object : CustomTarget<Bitmap>() {
@@ -83,6 +85,7 @@ class TvShowAdapter(private val callback: TvShowCallback) :
                                 itemCard.setCardBackgroundColor(
                                     palette?.getDarkMutedColor(defValue) ?: defValue
                                 )
+
                             }
                         }
 
@@ -91,14 +94,13 @@ class TvShowAdapter(private val callback: TvShowCallback) :
                     })
             }
         }
-
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: TvShowEntity)
+        fun onItemClicked(data: MovieEntity)
     }
 
-    fun setOnItemClicked(onItemClickCallback: OnItemClickCallback) {
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 }

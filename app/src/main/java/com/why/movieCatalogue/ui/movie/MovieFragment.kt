@@ -13,6 +13,7 @@ import com.why.movieCatalogue.R
 import com.why.movieCatalogue.data.source.local.entity.MovieEntity
 import com.why.movieCatalogue.databinding.FragmentMovieBinding
 import com.why.movieCatalogue.ui.detail.DetailMovieActivity
+import com.why.movieCatalogue.ui.detail.DetailMovieViewModel.Companion.MOVIE
 import com.why.movieCatalogue.ui.home.HomeActivity
 import com.why.movieCatalogue.vo.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,7 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment(), MovieCallback {
 
-    private val viewModel: MovieViewModel by viewModel( )
+    private val viewModel: MovieViewModel by viewModel()
     private lateinit var fragmentMovieBinding: FragmentMovieBinding
     private lateinit var movieAdapter: MovieAdapter
 
@@ -44,6 +45,7 @@ class MovieFragment : Fragment(), MovieCallback {
                         Status.LOADING -> fragmentMovieBinding.progressBar.visibility = View.VISIBLE
                         Status.SUCCESS -> {
                             movieAdapter.submitList(movies.data)
+                            movieAdapter.notifyDataSetChanged()
                             fragmentMovieBinding.progressBar.visibility = View.GONE
                         }
                         Status.ERROR -> {
@@ -63,6 +65,7 @@ class MovieFragment : Fragment(), MovieCallback {
                     activity?.let {
                         val intent = Intent(it, DetailMovieActivity::class.java)
                         intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, data.id)
+                        intent.putExtra(DetailMovieActivity.EXTRA_CATEGORY, MOVIE)
                         it.startActivity(intent)
                         activity?.overridePendingTransition(R.anim.from_right, R.anim.to_left)
                     }

@@ -13,14 +13,12 @@ interface ApiService {
 
     @GET("discover/movie")
     fun getAllMovie(
-        @Query("api_key") auth: String,
-        @Query("page") page: Int
+        @Query("api_key") auth: String
     ): Call<ListMovieResponse>
 
     @GET("discover/tv")
     fun getAllTvShow(
-        @Query("api_key") auth: String,
-        @Query("page") page: String
+        @Query("api_key") auth: String
     ): Call<ListTvShowResponse>
 
     @GET("movie/{movie_id}")
