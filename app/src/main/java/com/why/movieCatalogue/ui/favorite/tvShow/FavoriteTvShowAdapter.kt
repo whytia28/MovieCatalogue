@@ -14,7 +14,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.why.movieCatalogue.R
-import com.why.movieCatalogue.data.source.local.entity.MovieEntity
 import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
 import com.why.movieCatalogue.databinding.ItemsMovieBinding
 import com.why.movieCatalogue.ui.tvShow.TvShowCallback
