@@ -1,4 +1,4 @@
-package com.why.movieCatalogue.ui.tvShow
+package com.why.movieCatalogue.ui.favorite.tvShow
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
@@ -6,11 +6,10 @@ import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.why.movieCatalogue.data.MovieCatalogueRepository
 import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
+import com.why.movieCatalogue.utils.DataMovie
 import com.why.movieCatalogue.utils.appModule
-import com.why.movieCatalogue.vo.Resource
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,17 +21,15 @@ import org.koin.test.inject
 import org.koin.test.mock.MockProviderRule
 import org.koin.test.mock.declareMock
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class TvShowViewModelTest : KoinTest {
-    private val viewModel by inject<TvShowViewModel>()
+class FavoriteTvShowViewModelTest: KoinTest {
+    private val viewModel by inject<FavoriteTvShowViewModel>()
 
     @Mock
-    private lateinit var movieObserver: Observer<Resource<PagedList<TvShowEntity>>>
+    private lateinit var tvShowObserver: Observer<PagedList<TvShowEntity>>
 
     @Mock
     private lateinit var pagedList: PagedList<TvShowEntity>
@@ -42,7 +39,7 @@ class TvShowViewModelTest : KoinTest {
 
     @get:Rule
     val mockProvider = MockProviderRule.create { clazz ->
-        Mockito.mock(clazz.java)
+        mock(clazz.java)
     }
 
     @Before
@@ -50,6 +47,7 @@ class TvShowViewModelTest : KoinTest {
         startKoin {
             modules(appModule)
         }
+
     }
 
     @After
@@ -58,21 +56,28 @@ class TvShowViewModelTest : KoinTest {
     }
 
     @Test
-    fun getTvShows() {
+    fun getFavTvShow() {
         val movieRepository = declareMock<MovieCatalogueRepository>()
-        val dummyTvSHow = Resource.success(pagedList)
-        `when`(dummyTvSHow.data?.size).thenReturn(8)
-        val tvShows = MutableLiveData<Resource<PagedList<TvShowEntity>>>()
-        tvShows.value = dummyTvSHow
+        val dummyTvShow = pagedList
+        `when`(dummyTvShow.size).thenReturn(8)
+        val tvShows = MutableLiveData<PagedList<TvShowEntity>>()
+        tvShows.value = dummyTvShow
 
-        `when`(movieRepository.getAllTvShow("ASCEND")).thenReturn(tvShows)
-        val tvShowEntity = viewModel.getTvShows("ASCEND").value
-        verify(movieRepository).getAllTvShow("ASCEND")
+        `when`(movieRepository.getFavoriteTvShow()).thenReturn(tvShows)
+        val tvShow = viewModel.getFavTvShow().value
+        verify(movieRepository).getFavoriteTvShow()
+        assertNotNull(tvShow)
+        assertEquals(8, tvShow?.size)
 
-        assertNotNull(tvShowEntity)
-        assertEquals(8, tvShowEntity?.data?.size)
+        viewModel.getFavTvShow().observeForever(tvShowObserver)
+        verify(tvShowObserver).onChanged(dummyTvShow)
+    }
 
-        viewModel.getTvShows("ASCEND").observeForever(movieObserver)
-        verify(movieObserver).onChanged(dummyTvSHow)
+    @Test
+    fun setFavTvShow() {
+        val movieRepository = declareMock<MovieCatalogueRepository>()
+        viewModel.setFavTvShow(DataMovie.getDetailTvShow())
+        verify(movieRepository).setFavoriteTvShow(DataMovie.getDetailTvShow(), true)
+        verifyNoMoreInteractions(movieRepository)
     }
 }

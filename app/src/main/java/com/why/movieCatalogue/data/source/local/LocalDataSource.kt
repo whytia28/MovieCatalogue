@@ -10,12 +10,6 @@ import com.why.movieCatalogue.utils.SortUtils.MOVIE_ENTITIES
 import com.why.movieCatalogue.utils.SortUtils.TV_SHOW_ENTITIES
 
 class LocalDataSource(private val mMovieCatalogueDao: MovieCatalogueDao) {
-    companion object {
-        private var INSTANCE: LocalDataSource? = null
-
-        fun getInstance(movieCatalogueDao: MovieCatalogueDao): LocalDataSource =
-            INSTANCE ?: LocalDataSource(movieCatalogueDao)
-    }
 
     fun getAllMovies(sort: String): DataSource.Factory<Int, MovieEntity> = mMovieCatalogueDao.getAllMovies(SortUtils.getSortedQuery(sort, MOVIE_ENTITIES))
 

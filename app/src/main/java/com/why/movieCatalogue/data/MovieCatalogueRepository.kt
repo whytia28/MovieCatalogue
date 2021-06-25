@@ -1,13 +1,11 @@
 package com.why.movieCatalogue.data
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.why.movieCatalogue.data.source.local.LocalDataSource
 import com.why.movieCatalogue.data.source.local.entity.MovieEntity
 import com.why.movieCatalogue.data.source.local.entity.TvShowEntity
-import com.why.movieCatalogue.data.source.local.room.MovieCatalogueDatabase
 import com.why.movieCatalogue.data.source.remote.ApiResponse
 import com.why.movieCatalogue.data.source.remote.RemoteDataSource
 import com.why.movieCatalogue.data.source.remote.response.MovieResponse
@@ -17,13 +15,8 @@ import com.why.movieCatalogue.data.source.remote.response.TvShowResponse
 import com.why.movieCatalogue.utils.AppExecutors
 import com.why.movieCatalogue.vo.Resource
 
-class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, context: Context) :
+class MovieCatalogueRepository(private val remoteDataSource: RemoteDataSource, private val localDataSource : LocalDataSource, private val appExecutors : AppExecutors) :
     MovieDataSource {
-
-
-    private val database = MovieCatalogueDatabase.getInstance(context)
-    private val localDataSource = LocalDataSource(database.movieCatalogueDao())
-    private val appExecutors = AppExecutors()
 
     override fun getAllMovie(sort: String): LiveData<Resource<PagedList<MovieEntity>>> {
 
